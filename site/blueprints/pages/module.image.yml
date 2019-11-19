@@ -1,0 +1,7 @@
+title: Image
+sections:
+  files:
+    headline: Image
+    type: files
+    layout: cards
+    max: 1

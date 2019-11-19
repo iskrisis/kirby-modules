@@ -1,0 +1,33 @@
+html {
+	font: 20px sans-serif;
+}
+
+body {
+	margin: 0;
+}
+
+img {
+	display: block;
+	width: 100%;
+}
+
+.module {
+	padding: 2rem;
+	border-bottom: 1px solid black;
+}
+.module:last-child {
+	border-bottom: 0;
+}
+
+.module.text *:first-child {
+	margin-top: 0;
+}
+.module.text *:last-child {
+	margin-bottom: 0;
+}
+
+.module.images {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2rem;
+}
