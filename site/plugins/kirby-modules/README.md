@@ -1,8 +1,6 @@
 # Kirby Modules
 
-Easily build modular Kirby websites.
-
-![module](https://user-images.githubusercontent.com/7975568/68720738-8a3f2b00-05b0-11ea-829f-ec6842312d2b.gif)
+![module](https://user-images.githubusercontent.com/7975568/69164144-ba765480-0aef-11ea-8b4e-b586066c3cbf.gif)
 
 ## Introduction to modules
 
@@ -20,9 +18,20 @@ This approach makes it possible to use pages as modules without sacrificing regu
     📄 Module B
 ```
 
+### Comparison to other approaches
+
+You can also set up modular Kirby websites with a [structure field](https://getkirby.com/docs/reference/panel/fields/structure) or the [builder plugin](https://github.com/TimOetting/kirby-builder).
+
+In comparison this approach offers some advantages:
+
+- Separate file pools
+- Better performance because of nesting
+- Anchor links out of the box
+- No issues with certain fields/plugins
+
 ### How do I set up the templates/blueprints?
 
-This plugin assumes you're going to use a `module.` prefix for your module blueprints. For example `site/pages/module.text.yml`. In there you can do anything you want—it's just a regular page.
+This plugin assumes you're going to use a `module.` prefix for your module blueprints. For example `site/blueprints/pages/module.text.yml`. In there you can do anything you want—it's just a regular page.
 
 On the modular (mother) pages you iterate over the modules inside the modules container like this:
 
@@ -36,17 +45,21 @@ On the modular (mother) pages you iterate over the modules inside the modules co
 
 As you can see, the modules don't have templates and simply live in for example `site/snippets/modules/module.text.php` or `site/snippets/modules/module.images.php`.
 
+### Example installation
+
+I put a simple example installation in a separate branch. Maybe this helps you getting started.
+
 ## Features of this plugin
 
 ### Modules section
 
 The modules section adds some features to the core pages section: 
 
-1. Every blueprint starting with `module.` is available to create.
-2. The module blueprint title is displayed in the info.
-3. The parent is set to the modules container.
-4. The link to the modules container in the headline is disabled.
-5. Small style adjustments to differentiate it from pages.
+- Every blueprint starting with `module.` is available to create
+- The module blueprint title is displayed in the info
+- The parent is set to the modules container
+- The link to the modules container in the headline is disabled
+- Small style adjustments to differentiate it from pages
 
 Using the modules section on a page will automatically trigger a built-in hook that creates the `modules` container page.
 
@@ -56,10 +69,14 @@ sections:
     type: modules
 ```
 
-### Module Model (sorry, that's what it's called)
+### Module models (sorry, that's what it's called)
 
 To overwrite the module URL you'd have to add a page model for every single module.
 This plugin overwrites the URL of every module page from `example.com/subpage-a/modules/text` to `example.com/subpage-a#text`.
+
+### Module templates
+
+This plugin adds templates with a redirection to the modules container and all the single modules. This way nobody can access the pages directly, not even by guessing the URLs.
 
 ### Module blueprint
 

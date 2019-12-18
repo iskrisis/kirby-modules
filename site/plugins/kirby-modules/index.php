@@ -18,7 +18,7 @@ if($default = array_search(option('medienbaecker.modules.default', 'module.text'
 // Create a model for each of the module blueprints
 class ModulePage extends Page {
 	public function url($options = null): string {
-		return $this->parents()->filterBy("intendedTemplate", "!=", "modules")->first()->url() . '#' . $this->slug();
+		return $this->parents()->filterBy('intendedTemplate', '!=', 'modules')->first()->url() . '#' . $this->slug();
 	}
 }
 $models = [];
@@ -46,7 +46,7 @@ Kirby::plugin('medienbaecker/modules', [
 					return $info;
 				},
 				'parent' => function() {
-					if($this->model()->find("modules")) {
+					if($this->model()->find('modules')) {
 						return 'page.find("modules")';
 					}
 					else {
@@ -57,27 +57,35 @@ Kirby::plugin('medienbaecker/modules', [
 		])
 	],
 	'hooks' => [
-		'page.create:after' => function ($page) {
-			$modules = false;
-			foreach($page->blueprint()->sections() as $section) {
-				if($section->type() == "modules") $modules = true;
+		'route:after' => function ($route, $path, $method) {
+			$uid = explode('/', $path);
+			$uid = end($uid);
+			$uid = str_replace('+', '/', $uid);
+			$page = kirby()->page($uid);
+			if ($page) {
+				if(!$page->find('modules') AND $page->intendedTemplate() != 'modules') {
+					$modules = false;
+					foreach($page->blueprint()->sections() as $section) {
+						if($section->type() == 'modules') $modules = true;
+					}
+					if($modules) {
+						try {
+							$modulesPage = $page->createChild([
+								'content'  => ['title' => 'Modules'],
+								'slug'     => 'modules',
+								'template' => 'modules'
+							]);
+						}
+						catch (Exception $error) {
+							throw new Exception($error);
+						}
+						if($modulesPage) {
+							$modulesPage->publish();
+						}
+					}
+				}
 			}
-			if($modules) {
-				try {
-					$modulesPage = $page->createChild([
-						'content'  => ['title' => 'Modules'],
-						'slug'     => 'modules',
-						'template' => 'modules'
-					]);
-				}
-				catch (Exception $error) {
-					throw new Exception($error);
-				}
-				if($modulesPage) {
-					$modulesPage->publish();
-				}
-			}
-		}
+		},
 	],
 	'templates' => $templates,
 	'pageModels' => $models,
@@ -92,6 +100,9 @@ Kirby::plugin('medienbaecker/modules', [
 		},
 		'moduleName' => function () {
 			return $this->blueprint()->title();
-		}
+		},
+		'moduleId' => function () {
+			return str_replace('.', '__', $this->intendedTemplate());
+		},
 	]
 ]);
