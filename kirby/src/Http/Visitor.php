@@ -55,7 +55,7 @@ class Visitor
      */
     public function __construct(array $arguments = [])
     {
-        $this->ip($arguments['ip'] ?? getenv('REMOTE_ADDR'));
+        $this->ip($arguments['ip'] ?? $_SERVER['REMOTE_ADDR'] ?? '');
         $this->userAgent($arguments['userAgent'] ?? $_SERVER['HTTP_USER_AGENT'] ?? '');
         $this->acceptedLanguage($arguments['acceptedLanguage'] ?? $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
         $this->acceptedMimeType($arguments['acceptedMimeType'] ?? $_SERVER['HTTP_ACCEPT'] ?? '');
@@ -180,6 +180,7 @@ class Visitor
     /**
      * Returns the MIME type from the provided list that
      * is most accepted (= preferred) by the visitor
+     * @since 3.3.0
      *
      * @param string ...$mimeTypes MIME types to query for
      * @return string|null Preferred MIME type
@@ -206,6 +207,7 @@ class Visitor
     /**
      * Returns true if the visitor prefers a JSON response over
      * an HTML response based on the `Accept` request header
+     * @since 3.3.0
      *
      * @return bool
      */
