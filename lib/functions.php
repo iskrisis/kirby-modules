@@ -18,7 +18,6 @@ function createModuleRegistry() {
 		'title' => 'Modules',
 		'options' => [
 			'changeTemplate' => false,
-			'delete' => false
 		],
 		'fields' => [
 			'modules_redirect' => true
